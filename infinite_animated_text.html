@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Animated text</title>
+</head>
+<body>
+	<style type="text/css">
+		strong{
+			font-weight: bold;
+		}
+		.typing_cursor{
+			opacity: 1;
+			animation:blink 0.7s infinite;
+			font-size: 40px;
+		}
+		@keyframes blink{
+			0%{
+				opacity: 0;
+			}
+			100%{
+				opacity: 1;
+			}
+		}
+	</style>
+
+	<h2>Domains for <strong class="js-landing"></strong> <span class="typing_cursor">|</span></h2>
+	<script type="text/javascript">
+		var texts_to_write = ['artists','dreamers','creators','makers','tinkerers','developers'];
+		var container = document.querySelector('.js-landing');
+		var word_position = 0;
+		function log(data){
+			console.log(data);
+		}
+		var running_times = texts_to_write.map(function(text){
+			return text.length * 1000 * 0.5
+		})
+		console.log(running_times);
+		var running_text = 0;
+		var starting_character = 0;
+		var text_end_wait_time = 0;
+		var reverse = false
+		function write(text,index){
+			if(!reverse){
+				container.innerHTML = text.slice(0,index+1);
+				starting_character +=1;
+				if(index == text.length){
+					reverse = !reverse;
+				}
+			}
+			else{
+				container.innerHTML = text.slice(0,index+1);
+				starting_character -=1;
+				if(starting_character == -1){
+					running_text += 1;
+					reverse = !reverse;
+				}
+			}
+		}
+		function infinity(){
+			if(running_text == texts_to_write.length){
+				running_text = 0;
+			}
+			if(starting_character == texts_to_write[running_text].length - 1 && !reverse){
+				text_end_wait_time = 1500
+			}
+			else{
+				text_end_wait_time = 0;
+			}
+			setTimeout(function(){
+				write(texts_to_write[running_text],starting_character)
+				setTimeout(infinity,text_end_wait_time);
+			},100)
+			
+		}
+		infinity()
+		//write(texts_to_write[running_text],starting_character);
+		console.log(starting_character);
+		//setInterval(,2000);
+	</script>
+</body>
+</html>
